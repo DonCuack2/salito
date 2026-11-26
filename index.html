@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@600&display=swap" rel="stylesheet">
 <style>
 :root{--plum:#8c0e27;--cream:#fff1f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html,body{height:100%;height:100dvh;margin:0;overflow:hidden;-webkit-text-size-adjust:100%;background:#9fd8f0;font-family:'Nunito',system-ui,sans-serif}
+html,body{height:100%;height:100dvh;margin:0;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;-webkit-text-size-adjust:100%;background:#9fd8f0;font-family:'Nunito',system-ui,sans-serif}
 *{box-sizing:border-box}
 .layer{position:absolute;inset:0;pointer-events:none}
 #skyDay{background:linear-gradient(#8fd3f4 0%,#c9ecf7 45%,#ffe4ee 80%)}
@@ -28,7 +28,7 @@ body.night #stars{opacity:1}
 body.night #sun{opacity:0;transform:translateY(160px)}
 body.night #moon{opacity:1;transform:none}
 #msg{position:absolute;z-index:6;left:50%;top:calc(env(safe-area-inset-top,0px) + 70px);transform:translateX(-50%);width:min(92%,720px);text-align:center;font-family:'Caveat','Segoe Script',cursive;font-weight:500;font-size:clamp(1.05rem,min(5vw,3.8vh),2.3rem);line-height:1.3;color:var(--plum);text-shadow:0 1px 10px rgba(255,255,255,.8);transition:color 1.6s,text-shadow 1.6s}
-#msg p{margin:0 0 .35em;opacity:0;transform:translateY(8px);filter:blur(5px);transition:opacity 1.5s,transform 1.5s,filter 1.5s;transition-delay:calc(var(--i)*.75s)}
+#msg p{text-wrap:balance;margin:0 0 .35em;opacity:0;transform:translateY(8px);filter:blur(5px);transition:opacity 1.5s,transform 1.5s,filter 1.5s;transition-delay:calc(var(--i)*.75s)}
 #msg p.n{font-size:1.5em;font-weight:700;margin-bottom:.2em}
 #msg p.f{margin-top:.5em;font-weight:700}
 #msg.show p{opacity:1;transform:none;filter:none}
@@ -40,7 +40,7 @@ body.night #scene{filter:brightness(.5) saturate(.8) hue-rotate(12deg)}
 .tree{position:absolute;transform-origin:50% 100%;animation:sway 9s ease-in-out infinite alternate}
 @keyframes sway{from{transform:rotate(-.8deg)}to{transform:rotate(.8deg)}}
 .tree svg{display:block;filter:drop-shadow(0 8px 12px rgba(120,40,80,.28))}
-#lake{position:absolute;z-index:150;left:50%;transform:translateX(-50%);bottom:3%;width:min(58%,560px);aspect-ratio:400/130}
+#lake{position:absolute;z-index:150;left:50%;transform:translateX(-50%);bottom:3%;width:min(58%,560px,70vh);aspect-ratio:400/130}
 #lake>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .rip{transform-box:fill-box;transform-origin:center;animation:rp 4s ease-out infinite}
 @keyframes rp{from{transform:scale(.3);opacity:.7}to{transform:scale(1.4);opacity:0}}
@@ -67,6 +67,9 @@ body.night #scene{filter:brightness(.5) saturate(.8) hue-rotate(12deg)}
 .coon.l{left:-24%}.coon.r{right:-24%}
 .coon svg{animation:nib 2.6s ease-in-out infinite;transform-origin:35% 100%}
 @keyframes nib{0%,60%,100%{transform:rotate(0)}15%,45%{transform:rotate(5deg)}30%{transform:rotate(0)}}
+@media (max-width:599px){#lake{width:min(64%,70vh)}#msg{top:calc(env(safe-area-inset-top,0px) + 82px)}}
+@media (max-width:900px){#trees .tree{max-width:25vh}}
+@media (max-height:500px) and (orientation:landscape){#msg{top:calc(env(safe-area-inset-top,0px) + 58px)}#btn{padding:7px 14px}}
 @keyframes jump{0%,100%{transform:translateY(0) scale(1.06,.9)}50%{transform:translateY(-16px) scale(.95,1.06)}}
 @keyframes run{0%{left:-8%;transform:scaleX(1)}49%{left:100%;transform:scaleX(1)}50%{left:100%;transform:scaleX(-1)}99%{left:-8%;transform:scaleX(-1)}100%{left:-8%;transform:scaleX(1)}}
 .tl{transform-box:fill-box;transform-origin:0% 100%;animation:wag 2.5s ease-in-out infinite alternate}
@@ -162,7 +165,7 @@ const f=mk('div','left:40%;bottom:31%;width:min(22vw,200px);opacity:.8',$('#far'
 /* tulipanes */
 const cols=['#e8112d','#ff2d4a','#d90f2b','#ff4f6b','#e8112d','#ff8fa0','#fff3f0','#ffd23f'];
 const M=$('#meadow'), sc=innerWidth<600?.8:innerWidth>1400?1.3:1;
-const lw=Math.min(.58,560/innerWidth), lbx=lw*innerWidth*.325/(.3*innerHeight)*100+14;
+const lwp0=Math.min(innerWidth<600?.64*innerWidth:.58*innerWidth,560,.7*innerHeight), lw=lwp0/innerWidth, lbx=lwp0*.325/(.3*innerHeight)*100+14;
 for(let i=0,N=Math.round(Math.min(150,Math.max(60,innerWidth/10)));i<N;i++){
   const b=R(0,80), l=R(0,96); if(l>50-lw*50-4&&l<50+lw*50+2&&b<lbx)continue; const w=(44-b*.26)*sc, c=cols[Math.floor(R(0,cols.length))];
   const e=mk('div',`left:${l}%;bottom:${b}%;width:${w}px;z-index:${Math.round(100-b)};animation-delay:-${R(0,4)}s;animation-duration:${R(3,5)}s`,M);
@@ -233,7 +236,7 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
 /* conejos repartidos por toda la pradera (solo en zonas verdes, evitando el lago) */
 const RB=[],P2=Math.PI;
 function lakeBlock(x,y,w){
-  const W=innerWidth,H=innerHeight,lwp=Math.min(.58*W,560),lh=lwp*.325;
+  const W=innerWidth,H=innerHeight,lwp=Math.min(W<600?.64*W:.58*W,560,.7*H),lh=lwp*.325;
   const cx=W/2,cy=H*.03+lh*.446,rx=lwp*.49*1.38+w*.4,ry=lh*.43*1.35+w*.12;
   return ((x-cx)/rx)**2+((y-cy)/ry)**2<1;
 }
@@ -253,7 +256,7 @@ function pickHop(o){
   }
   return false;
 }
-const NB=innerWidth<600?7:10, bwB=Math.max(50,Math.min(80,innerWidth*.062));
+const NB=innerWidth<600?7:10, bwB=Math.max(60,Math.min(84,innerWidth*.062));
 for(let i=0;i<NB;i++){
   const e=mk('div',`bottom:0;width:${bwB.toFixed(0)}px;--ed:${(-R(0,6)).toFixed(1)}s`,$('#scene'));
   e.className='hop';e.innerHTML=bunnySVG(PAL[[2,1,0,3,2,0,1,3,2,0][i%10]]);
@@ -321,14 +324,16 @@ const TXT_OLD={
 function fill(n){const a=['Salito',...TXT[n?'night':'day']];msg.innerHTML=a.map((t,i)=>`<p${i==0?' class="n"':i==a.length-1?' class="f"':''} style="--i:${i}">${t}</p>`).join('')}
 function setMode(n){
   document.body.classList.toggle('night',n);
-  fill(n);
+  fill(n);try{sessionStorage.setItem('mode',n?'1':'0')}catch(e){}
   btn.setAttribute('aria-pressed',n);
   btn.textContent=n?'☀️ Ver el día':'🌙 Ver la noche';
   reveal();
 }
 btn.addEventListener('click',()=>setMode(!document.body.classList.contains('night')));
 const h=new Date().getHours();
-setMode(h>=19||h<6);
+let m0=null;try{m0=sessionStorage.getItem('mode')}catch(e){}
+setMode(m0?m0=='1':(h>=19||h<6));
+let rT,W0=innerWidth;addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(()=>{if(Math.abs(innerWidth-W0)/W0>.2)location.reload()},500)});
 </script>
 </body>
 </html>
