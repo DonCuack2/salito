@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Para Salito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{--plum:#8c0e27;--cream:#fff1f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;height:100dvh;margin:0;overflow:hidden;-webkit-text-size-adjust:100%;background:#9fd8f0;font-family:'Nunito',system-ui,sans-serif}
+*{box-sizing:border-box}
+.layer{position:absolute;inset:0;pointer-events:none}
+#skyDay{background:linear-gradient(#8fd3f4 0%,#c9ecf7 45%,#ffe4ee 80%)}
+#skyNight{background:linear-gradient(#0a0824 0%,#1d1450 50%,#4a2468 85%);opacity:0;transition:opacity 2s}
+body.night #skyNight{opacity:1}
+#stars{opacity:0;transition:opacity 2s}
+body.night #stars{opacity:1}
+#stars i{position:absolute;border-radius:50%;background:#fff;box-shadow:0 0 6px 1px rgba(255,255,255,.8);opacity:.8;animation:tw 3s ease-in-out infinite alternate}
+@keyframes tw{from{opacity:.25}to{opacity:1}}
+.orb{position:absolute;right:12px;top:calc(env(safe-area-inset-top,0px) + 8px);width:64px;aspect-ratio:1;border-radius:50%;transition:transform 2s ease,opacity 1.6s}
+@media (min-width:1100px){.orb{right:7%;top:9%;width:130px}}
+@keyframes spin{to{transform:rotate(360deg)}}
+#sun{background:radial-gradient(circle at 40% 35%,#fffef0 0,#ffe98a 50%,#ffb830 100%);box-shadow:0 0 30px 10px rgba(255,214,90,.8),0 0 90px 35px rgba(255,200,80,.45)}
+#sun::before{content:"";position:absolute;inset:-70%;border-radius:50%;background:repeating-conic-gradient(rgba(255,224,110,.6) 0 5deg,transparent 5deg 15deg);-webkit-mask:radial-gradient(circle,transparent 24%,#000 27%,transparent 68%);mask:radial-gradient(circle,transparent 24%,#000 27%,transparent 68%);animation:spin 40s linear infinite}
+#moon{background:radial-gradient(circle at 62% 38%,rgba(185,165,115,.5) 0 9%,transparent 10%),radial-gradient(circle at 34% 62%,rgba(185,165,115,.45) 0 12%,transparent 13%),radial-gradient(circle at 68% 72%,rgba(185,165,115,.4) 0 7%,transparent 8%),radial-gradient(circle at 35% 30%,#fffdf2 0,#fff3c8 50%,#eadfb0 100%);box-shadow:0 0 28px 8px rgba(255,244,200,.7),0 0 100px 35px rgba(255,235,170,.35);opacity:0;transform:translateY(160px)}
+body.night #sun{opacity:0;transform:translateY(160px)}
+body.night #moon{opacity:1;transform:none}
+#msg{position:absolute;z-index:6;left:50%;top:calc(env(safe-area-inset-top,0px) + 70px);transform:translateX(-50%);width:min(92%,720px);text-align:center;font-family:'Caveat','Segoe Script',cursive;font-weight:500;font-size:clamp(1.05rem,min(5vw,3.8vh),2.3rem);line-height:1.3;color:var(--plum);text-shadow:0 1px 10px rgba(255,255,255,.8);transition:color 1.6s,text-shadow 1.6s}
+#msg p{margin:0 0 .35em;opacity:0;transform:translateY(8px);filter:blur(5px);transition:opacity 1.5s,transform 1.5s,filter 1.5s;transition-delay:calc(var(--i)*.75s)}
+#msg p.n{font-size:1.5em;font-weight:700;margin-bottom:.2em}
+#msg p.f{margin-top:.5em;font-weight:700}
+#msg.show p{opacity:1;transform:none;filter:none}
+#msg.reset p{transition:none}
+body.night #msg{color:var(--cream);text-shadow:0 0 14px rgba(255,150,210,.75),0 0 2px rgba(255,255,255,.6)}
+#scene{position:absolute;inset:0;transition:filter 2s;pointer-events:none}
+body.night #scene{filter:brightness(.5) saturate(.8) hue-rotate(12deg)}
+.hill{position:absolute;left:0;width:100%}
+.tree{position:absolute;transform-origin:50% 100%;animation:sway 9s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-.8deg)}to{transform:rotate(.8deg)}}
+.tree svg{display:block;filter:drop-shadow(0 8px 12px rgba(120,40,80,.28))}
+#lake{position:absolute;z-index:150;left:50%;transform:translateX(-50%);bottom:3%;width:min(58%,560px);aspect-ratio:400/130}
+#lake>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.rip{transform-box:fill-box;transform-origin:center;animation:rp 4s ease-out infinite}
+@keyframes rp{from{transform:scale(.3);opacity:.7}to{transform:scale(1.4);opacity:0}}
+.duck{position:absolute;top:var(--t);left:14%;animation:swim var(--d) ease-in-out infinite}
+.duck svg{display:block;width:100%;animation:bob 2s ease-in-out infinite alternate}
+@keyframes swim{0%{left:14%;transform:scaleX(1)}46%{left:72%;transform:scaleX(1)}50%{left:72%;transform:scaleX(-1)}96%{left:14%;transform:scaleX(-1)}100%{left:14%;transform:scaleX(1)}}
+@keyframes bob{to{transform:translateY(3px) rotate(2deg)}}
+.coon{position:absolute;bottom:-4%;width:clamp(44px,14%,78px)}
+.coon svg{display:block;width:100%;overflow:visible}
+.coon.l{left:-17%}.coon.r{right:-17%;transform:scaleX(-1)}
+.tl{transform-box:fill-box;transform-origin:0% 100%;animation:wag 2.5s ease-in-out infinite alternate}
+@keyframes wag{to{transform:rotate(9deg)}}
+#meadow{position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(#97d579,#5fae5a)}
+.tp{position:absolute;pointer-events:auto;cursor:pointer;transform-origin:50% 100%;animation:sw 4s ease-in-out infinite alternate;-webkit-tap-highlight-color:transparent}
+.tp svg{display:block;width:100%;height:auto;overflow:visible}
+@keyframes sw{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+@media (hover:hover){.tp:hover{filter:brightness(1.12)}}
+#petals b{position:absolute;top:-5%;width:var(--s);height:calc(var(--s)*.7);background:#ffc2da;border-radius:150% 0 150% 0;opacity:.85;animation:fall var(--d) linear infinite}
+@keyframes fall{to{transform:translate(var(--x),110vh) rotate(540deg)}}
+#flies{opacity:0;transition:opacity 2s}
+body.night #flies{opacity:1}
+#flies u{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff6a8;box-shadow:0 0 10px 3px rgba(255,246,120,.8);animation:fl var(--d) ease-in-out infinite alternate}
+@keyframes fl{from{transform:translate(0,0);opacity:.2}to{transform:translate(var(--x),var(--y));opacity:1}}
+.heart{position:fixed;z-index:30;pointer-events:none;color:#e8112d;font-size:22px;animation:up 1.6s ease-out forwards}
+@keyframes up{to{transform:translate(var(--hx),-150px) scale(1.4);opacity:0}}
+#btn{position:fixed;z-index:20;top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;border:0;border-radius:999px;padding:10px 18px;font:600 15px 'Nunito',system-ui,sans-serif;color:var(--plum);background:rgba(255,255,255,.65);backdrop-filter:blur(8px);cursor:pointer;transition:background 1.6s,color 1.6s}
+body.night #btn{background:rgba(40,26,80,.6);color:var(--cream)}
+#btn:focus-visible{outline:3px solid #ff4f86;outline-offset:3px}
+#hint{position:fixed;z-index:20;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);text-align:center;color:#fff;font-size:14px;text-shadow:0 1px 6px rgba(0,0,0,.45);transition:opacity 1s;pointer-events:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}#msg p{opacity:1;transform:none;filter:none;transition:none}}
+</style>
+</head>
+<body>
+<div id="skyDay" class="layer"></div>
+<div id="skyNight" class="layer"></div>
+<div id="stars" class="layer"></div>
+<div id="sun" class="orb"></div>
+<div id="moon" class="orb"></div>
+
+<div id="msg" aria-live="polite">
+  <p class="n" style="--i:0">Isabella,</p>
+  <p style="--i:1">quiero ser tu calma cuando el día pese,</p>
+  <p style="--i:2">tu risa cuando todo se ponga gris,</p>
+  <p style="--i:3">tu abrazo cuando falten las palabras.</p>
+  <p style="--i:4">Quiero ser tu amigo, tu hogar, tu compañía…</p>
+  <p style="--i:5">quiero ser todo para ti.</p>
+  <p style="--i:6">Y si algún día no ves la luz,</p>
+  <p style="--i:7">yo seré las estrellas hasta que amanezca.</p>
+  <p class="f" style="--i:8">Te quiero con el corazón entero.</p>
+</div>
+
+<div id="scene">
+  <svg class="hill" style="bottom:24%;height:22%" viewBox="0 0 1000 200" preserveAspectRatio="none"><path d="M0 120 C150 40 300 40 450 100 C600 160 760 30 1000 90 V200 H0Z" fill="#cdeaa6"/></svg>
+  <div id="far"></div>
+  <svg class="hill" style="bottom:12%;height:26%" viewBox="0 0 1000 260" preserveAspectRatio="none"><path d="M0 90 C200 10 380 120 560 70 C720 25 860 60 1000 20 V260 H0Z" fill="#a9db8a"/></svg>
+  <div id="meadow"></div>
+  <div id="lake"><svg viewBox="0 0 400 130"><defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a6e3f7"/><stop offset="1" stop-color="#3f9fd0"/></linearGradient></defs><ellipse cx="200" cy="72" rx="197" ry="56" fill="#4a9650"/><ellipse cx="200" cy="66" rx="187" ry="50" fill="url(#wg)"/><ellipse cx="140" cy="52" rx="70" ry="7" fill="#fff" opacity=".28"/><ellipse cx="290" cy="84" rx="50" ry="5" fill="#fff" opacity=".2"/><ellipse cx="90" cy="82" rx="15" ry="5.5" fill="#3c8a48"/><circle cx="94" cy="78" r="3.6" fill="#e8112d"/><ellipse cx="300" cy="52" rx="14" ry="5" fill="#3c8a48"/><circle cx="296" cy="49" r="3.4" fill="#e8112d"/><ellipse cx="215" cy="96" rx="12" ry="4.5" fill="#3c8a48"/><circle cx="218" cy="93" r="3" fill="#ff4f6b"/><ellipse class="rip" cx="170" cy="70" rx="26" ry="7" fill="none" stroke="#fff" stroke-width="1.5"/><ellipse class="rip" style="animation-delay:-2s" cx="250" cy="78" rx="26" ry="7" fill="none" stroke="#fff" stroke-width="1.5"/></svg></div>
+  <div id="trees"></div>
+</div>
+
+<div id="flies" class="layer"></div>
+<div id="petals" class="layer"></div>
+<button id="btn" type="button" aria-pressed="false"></button>
+<div id="hint">Toca o haz clic en los tulipanes</div>
+
+<script>
+const $=s=>document.querySelector(s), R=(a,b)=>a+Math.random()*(b-a);
+const mk=(t,css,p)=>{const e=document.createElement(t);e.style.cssText=css;p.appendChild(e);return e};
+
+/* estrellas */
+for(let i=0;i<120;i++){const s=R(1.5,3.6);mk('i',`left:${R(0,100)}%;top:${R(0,60)}%;width:${s}px;height:${s}px;animation-delay:${-R(0,4)}s;animation-duration:${R(2,5)}s`,$('#stars'))}
+
+/* sakuras */
+let uid=0;
+function sakura(){
+  const id='h'+(uid++);
+  const L=['#ffe3ee','#ffd0e3','#ffc2da'],M=['#ffa6c9','#ff8fbb'],D=['#e8699f','#d9558f'];
+  const cl=[[120,235,52],[205,215,56],[160,150,60],[80,190,44],[255,185,42],[130,95,42],[205,125,44],[40,240,30],[285,240,30],[165,70,36],[100,130,34],[240,140,34]];
+  let g='';
+  const blob=(a,n,r1,r2,op,o)=>cl.forEach(([x,y,s])=>{for(let i=0;i<n;i++)g+=`<circle cx="${(x+R(-s,s)).toFixed(1)}" cy="${(y+o+R(-s*.7,s*.7)).toFixed(1)}" r="${R(r1,r2).toFixed(1)}" fill="${a[Math.floor(R(0,a.length))]}" opacity="${op}"/>`});
+  blob(D,10,12,22,.92,10);blob(M,14,10,19,.93,0);blob(L,14,6,14,.95,-8);
+  for(let i=0;i<46;i++){const c=cl[Math.floor(R(0,cl.length))];g+=`<circle cx="${(c[0]+R(-c[2],c[2])).toFixed(1)}" cy="${(c[1]+R(-c[2]*.8,c[2]*.5)-12).toFixed(1)}" r="${R(2,4.2).toFixed(1)}" fill="#fff" opacity=".92"/>`}
+  const P=['M160 420 C158 350 150 300 118 245|16','M156 340 C175 300 195 265 212 222|11','M146 290 C150 240 160 205 160 160|9','M120 250 C100 225 85 205 80 190|6','M212 225 C235 215 250 200 255 185|6','M160 165 C150 140 138 118 130 98|5','M160 170 C180 150 195 138 205 125|5'];
+  const tr=P.map(p=>{const[d,w]=p.split('|');return `<path d="${d}" stroke="#432630" stroke-width="${+w+4}" fill="none" stroke-linecap="round"/><path d="${d}" stroke="#7d4b55" stroke-width="${w}" fill="none" stroke-linecap="round"/>`}).join('');
+  return `<svg viewBox="0 0 320 420" width="100%"><defs><radialGradient id="${id}"><stop offset="0" stop-color="#ff9ec9" stop-opacity=".5"/><stop offset="1" stop-color="#ff9ec9" stop-opacity="0"/></radialGradient></defs><ellipse cx="160" cy="170" rx="175" ry="150" fill="url(#${id})"/>${tr}<path d="M132 420 Q150 395 160 378 Q172 395 190 420Z" fill="#5a3640"/>${g}</svg>`;
+}
+function sakuraOld(){
+  const pal=['#ffc6dc','#ffb0cf','#ffd9e8','#ff9ec4','#ffe6ef'];
+  let g='';
+  [[120,235,50],[205,215,54],[160,150,58],[80,190,42],[255,185,40],[130,95,40],[205,125,42],[40,240,28],[285,240,28],[165,70,34]].forEach(([x,y,s])=>{
+    for(let i=0;i<18;i++)g+=`<circle cx="${(x+R(-s,s)).toFixed(1)}" cy="${(y+R(-s*.7,s*.7)).toFixed(1)}" r="${R(9,19).toFixed(1)}" fill="${pal[Math.floor(R(0,5))]}" opacity=".88"/>`;
+  });
+  const t=['M160 420 C158 350 150 300 118 245|16','M156 340 C175 300 195 265 212 222|11','M146 290 C150 240 160 205 160 160|9','M120 250 C100 225 85 205 80 190|6','M212 225 C235 215 250 200 255 185|6','M160 165 C150 140 138 118 130 98|5','M160 170 C180 150 195 138 205 125|5']
+    .map(p=>{const[d,w]=p.split('|');return `<path d="${d}" stroke="#6b4545" stroke-width="${w}" fill="none" stroke-linecap="round"/>`}).join('');
+  return `<svg viewBox="0 0 320 420" width="100%">${t}${g}</svg>`;
+}
+const T=$('#trees');
+[['left:-3%;bottom:21%;width:min(50vw,400px,50vh)',0],['right:-4%;bottom:19%;width:min(44vw,360px,45vh)',2]].forEach(([c,d])=>{const e=mk('div',c+`;animation-delay:-${d}s`,T);e.className='tree';e.innerHTML=sakura()});
+const f=mk('div','left:40%;bottom:31%;width:min(22vw,200px);opacity:.8',$('#far'));f.className='tree';f.innerHTML=sakura();
+
+/* tulipanes */
+const cols=['#e8112d','#ff2d4a','#d90f2b','#ff4f6b','#e8112d','#ff8fa0','#fff3f0','#ffd23f'];
+const M=$('#meadow'), sc=innerWidth<600?.8:innerWidth>1400?1.3:1;
+const lw=Math.min(.58,560/innerWidth), lbx=lw*innerWidth*.325/(.3*innerHeight)*100+14;
+for(let i=0,N=Math.round(Math.min(150,Math.max(60,innerWidth/10)));i<N;i++){
+  const b=R(0,80), l=R(0,96); if(l>50-lw*50-4&&l<50+lw*50+2&&b<lbx)continue; const w=(44-b*.26)*sc, c=cols[Math.floor(R(0,cols.length))];
+  const e=mk('div',`left:${l}%;bottom:${b}%;width:${w}px;z-index:${Math.round(100-b)};animation-delay:-${R(0,4)}s;animation-duration:${R(3,5)}s`,M);
+  e.className='tp';
+  e.innerHTML=`<svg viewBox="0 0 40 100"><path d="M20 100 Q23 70 20 42" stroke="#3f8f4a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M21 96 Q38 80 33 56 Q24 72 21 96Z" fill="#4aa457"/><path d="M8 20 Q5 42 20 48 Q35 42 32 20 L26 29 L20 14 L14 29Z" fill="${c}"/><path d="M14 29 L20 14 L26 29 Q20 40 14 29Z" fill="#fff" opacity=".28"/></svg>`;
+  e.addEventListener('click',ev=>{
+    const r=e.getBoundingClientRect();
+    for(let k=0;k<6;k++){const h=mk('span',`left:${r.left+r.width/2}px;top:${r.top}px;--hx:${R(-50,50)}px;animation-delay:${k*.08}s`,document.body);h.className='heart';h.textContent='♥';setTimeout(()=>h.remove(),2000)}
+    $('#hint').style.opacity=0;
+  });
+}
+
+/* lago: patos y mapaches */
+const LK=$('#lake');
+const DUCK='<svg viewBox="0 0 42 30"><path d="M5 17 L1 11 L9 15Z" fill="#ffd23f"/><ellipse cx="18" cy="20" rx="14" ry="8" fill="#ffd23f"/><ellipse cx="16" cy="20" rx="7" ry="4" fill="#f5b800"/><circle cx="30" cy="11" r="7" fill="#ffd23f"/><path d="M36 10 L41 12 L36 14Z" fill="#ff8a1f"/><circle cx="32" cy="9" r="1.3" fill="#222"/><path d="M2 26 Q10 24 18 26 T36 26" stroke="#fff" stroke-width="1.4" fill="none" opacity=".7"/></svg>';
+[[16,'26%',0,14],[21,'42%',-8,14],[13,'50%',-4,9]].forEach(([d,t,dl,w])=>{const e=mk('span',`--d:${d}s;--t:${t};animation-delay:${dl}s;width:${w}%`,LK);e.className='duck';e.innerHTML=DUCK});
+const COON='<svg viewBox="0 0 64 60"><g class="tl"><path d="M44 50 Q62 44 58 24" stroke="#8d8d96" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M44 50 Q62 44 58 24" stroke="#3b3b44" stroke-width="9.2" fill="none" stroke-dasharray="4 6"/></g><ellipse cx="28" cy="44" rx="15" ry="13" fill="#9a9aa3"/><ellipse cx="28" cy="47" rx="9" ry="8" fill="#dcdce1"/><circle cx="14" cy="11" r="5.5" fill="#8d8d96"/><circle cx="42" cy="11" r="5.5" fill="#8d8d96"/><circle cx="14" cy="11" r="2.5" fill="#3b3b44"/><circle cx="42" cy="11" r="2.5" fill="#3b3b44"/><ellipse cx="28" cy="23" rx="16" ry="13" fill="#a9a9b2"/><path d="M12 22 Q28 13 44 22 Q43 31 36 30 Q28 26 20 30 Q13 31 12 22Z" fill="#3b3b44"/><ellipse cx="28" cy="31" rx="7" ry="5" fill="#f1f1f4"/><circle cx="21" cy="23" r="2.6" fill="#fff"/><circle cx="35" cy="23" r="2.6" fill="#fff"/><circle cx="21.6" cy="23.2" r="1.3" fill="#111"/><circle cx="35.6" cy="23.2" r="1.3" fill="#111"/><ellipse cx="28" cy="29" rx="2.4" ry="1.8" fill="#111"/><ellipse cx="19" cy="56" rx="6" ry="2.8" fill="#3b3b44"/><ellipse cx="37" cy="56" rx="6" ry="2.8" fill="#3b3b44"/></svg>';
+['l','r'].forEach(s=>{const e=mk('div','',LK);e.className='coon '+s;e.innerHTML=COON});
+
+/* pétalos y luciérnagas */
+for(let i=0;i<26;i++)mk('b',`left:${R(0,100)}%;--s:${R(8,15)}px;--d:${R(9,18)}s;--x:${R(-120,120)}px;animation-delay:-${R(0,18)}s`,$('#petals'));
+for(let i=0;i<38;i++)mk('u',`left:${R(2,98)}%;top:${R(45,96)}%;--d:${R(3,6)}s;--x:${R(-40,40)}px;--y:${R(-40,30)}px;animation-delay:-${R(0,5)}s`,$('#flies'));
+
+/* día / noche */
+const btn=$('#btn'), msg=$('#msg');
+function reveal(){msg.classList.add('reset');msg.classList.remove('show');void msg.offsetWidth;msg.classList.remove('reset');requestAnimationFrame(()=>msg.classList.add('show'))}
+const TXT={
+ day:['Espero que hoy tengas un día muy bonito.','Que todo te salga bien, que encuentres motivos para sonreír','y que nada te quite esas ganas de seguir adelante.','Cuídate mucho, confía en ti','y recuerda que eres capaz de lograr cosas maravillosas.','¡Te deseo un día lleno de cosas bonitas!'],
+ night:['Espero que nunca dejes de luchar por cada uno de tus sueños.','No importa cuánto tiempo tome llegar a ellos,','lo importante es que nunca pierdas la ilusión de conseguirlos.','Eres una persona muy valiosa y mereces ver cómo todo aquello por lo que tanto te esfuerzas se convierte en realidad.','Cuídate mucho, descansa','y nunca olvides lo mucho que puedes llegar a lograr.']};
+const TXT_OLD4={
+ day:['Buenos días, Salito.','Que hoy el día te trate con cariño,','que las cosas salgan más fáciles de lo que esperas','y que encuentres motivos para sonreír.','Si algo se complica, respira:','tú puedes con esto y con mucho más.','Que tengas un día muy bonito.'],
+ night:['Salito,','hay personas que simplemente pasan por el mundo,','y otras que lo vuelven más habitable con solo existir.','Tú perteneces a las segundas.','Mereces un mundo entero,','con sus mañanas tranquilas, sus tardes de risa','y noches como esta, llenas de estrellas.','Nunca lo olvides: eres importante.']};
+const TXT_OLD3={
+ day:['Hoy el sol sale un poquito más bonito,','y creo que sé por qué.','Estoy muy feliz de haberte conocido, Salito.','Tú iluminas mis días,','incluso los más grises.','Y no, no es una indirecta…','bueno, tal vez un poquito.'],
+ night:['Salito,','me alegra mucho haberte conocido.','Tú iluminas mis días y alegras mis noches,','y eso no es poca cosa.','Así que si me ves sonriendo sin motivo,','ya sabes por quién puede ser.','Buenas noches, que descanses bonito.']};
+const TXT_OLD2={
+ day:['Contigo hasta el silencio encuentra sentido,','eres esa luz que abraza mis días más grises.','Quiero despertar y encontrarte en mis pensamientos,','caminar contigo mientras florecen los tulipanes','y descubrir en tu mirada un pedacito de eternidad.','Quiero amarte incluso en tus días más difíciles,','ser tu refugio cuando la vida nos pese','y que, pase lo que pase, mi alma siga reconociendo la tuya.'],
+ dayOld:['Contigo cada mañana vuelve a tener sentido,','eres la luz que hace florecer mi alegría.','Quiero despertar con tu nombre en mis labios,','caminar a tu lado entre campos de tulipanes','y encontrar en tus ojos mi lugar favorito.','Quiero ser ese amor que siempre te abrace,','hoy, mañana y mientras la vida nos lo permita.','Cada día, entre mil vidas, volvería a elegirte.'],
+ night:['Isabella,','quiero ser tu calma cuando el mundo duela,','tu sonrisa cuando la vida se vuelva gris,','tu refugio cuando no encuentres las palabras.','Quiero ser tu hogar, tu paz y tu lugar seguro…','ese rincón del mundo donde nunca te sientas sola.','Y si algún día se te olvida cómo brillar,','seré las estrellas que te acompañen hasta el amanecer.','Porque te quiero, con todo lo que soy y lo que siento.']};
+const TXT_OLD={
+ day:['Isabella,','contigo cada mañana tiene sentido,','eres la luz que hace florecer mi día.','Quiero despertar pensando en ti,','caminar a tu lado entre tulipanes','y ser la razón de tu sonrisa.','Quiero ser todo para ti,','hoy, mañana y todos los días.','Cada día quiero elegirte a ti.'],
+ night:['Isabella,','quiero ser tu calma cuando el día pese,','tu risa cuando todo se ponga gris,','tu abrazo cuando falten las palabras.','Quiero ser tu amigo, tu hogar, tu compañía…','quiero ser todo para ti.','Y si algún día no ves la luz,','yo seré las estrellas hasta que amanezca.','Te quiero con el corazón entero.']};
+function fill(n){const a=['Salito',...TXT[n?'night':'day']];msg.innerHTML=a.map((t,i)=>`<p${i==0?' class="n"':i==a.length-1?' class="f"':''} style="--i:${i}">${t}</p>`).join('')}
+function setMode(n){
+  document.body.classList.toggle('night',n);
+  fill(n);
+  btn.setAttribute('aria-pressed',n);
+  btn.textContent=n?'☀️ Ver el día':'🌙 Ver la noche';
+  reveal();
+}
+btn.addEventListener('click',()=>setMode(!document.body.classList.contains('night')));
+const h=new Date().getHours();
+setMode(h>=19||h<6);
+</script>
+</body>
+</html>
