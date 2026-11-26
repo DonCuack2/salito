@@ -51,6 +51,24 @@ body.night #scene{filter:brightness(.5) saturate(.8) hue-rotate(12deg)}
 .coon{position:absolute;bottom:-4%;width:clamp(44px,14%,78px)}
 .coon svg{display:block;width:100%;overflow:visible}
 .coon.l{left:-17%}.coon.r{right:-17%;transform:scaleX(-1)}
+.coon svg{animation:nod 3.2s ease-in-out infinite}.coon.r svg{animation-delay:-1.6s}
+@keyframes nod{0%,78%,100%{transform:translateY(0)}86%{transform:translateY(-9px)}92%{transform:translateY(0)}95%{transform:translateY(-5px)}}
+.hop{position:absolute;bottom:var(--b);left:0;z-index:140;animation:run var(--d) linear infinite}
+.hop>div{transform-origin:50% 100%;animation:jump var(--j) ease-in-out infinite}
+.hop svg{display:block;width:100%;overflow:visible}
+.hop{animation:none;transform-origin:50% 100%;will-change:transform}
+.sit,.leap{display:none}
+.hop:not(.air) .sit,.coon .sit,.hop.air .leap{display:block}
+.ear{transform-box:fill-box;transform-origin:50% 100%;animation:et 6s ease-in-out infinite;animation-delay:var(--ed,0s)}
+@keyframes et{0%,84%,100%{transform:rotate(0)}88%{transform:rotate(-10deg)}92%{transform:rotate(3deg)}96%{transform:rotate(-6deg)}}
+.nz{transform-box:fill-box;transform-origin:center;animation:nz .5s ease-in-out infinite alternate}
+@keyframes nz{to{transform:scale(1.25)}}
+.coon{width:clamp(54px,17%,92px)}
+.coon.l{left:-24%}.coon.r{right:-24%}
+.coon svg{animation:nib 2.6s ease-in-out infinite;transform-origin:35% 100%}
+@keyframes nib{0%,60%,100%{transform:rotate(0)}15%,45%{transform:rotate(5deg)}30%{transform:rotate(0)}}
+@keyframes jump{0%,100%{transform:translateY(0) scale(1.06,.9)}50%{transform:translateY(-16px) scale(.95,1.06)}}
+@keyframes run{0%{left:-8%;transform:scaleX(1)}49%{left:100%;transform:scaleX(1)}50%{left:100%;transform:scaleX(-1)}99%{left:-8%;transform:scaleX(-1)}100%{left:-8%;transform:scaleX(1)}}
 .tl{transform-box:fill-box;transform-origin:0% 100%;animation:wag 2.5s ease-in-out infinite alternate}
 @keyframes wag{to{transform:rotate(9deg)}}
 #meadow{position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(#97d579,#5fae5a)}
@@ -157,12 +175,125 @@ for(let i=0,N=Math.round(Math.min(150,Math.max(60,innerWidth/10)));i<N;i++){
   });
 }
 
+const PAL=[{c:'#9b7653',b:'#e0cdb0',d:'#6a4e36',e:'#d9a08f'},{c:'#8d8e93',b:'#dcdcde',d:'#5d5e63',e:'#d9a9b0'},{c:'#c49a6c',b:'#efdcc0',d:'#8c6a45',e:'#e0a595'},{c:'#f4f0ea',b:'#ffffff',d:'#cfc6b9',e:'#f5b3c0'}];
+let bid=0;
+function bunnySVG(p){const id='bg'+(bid++);return `<svg viewBox="-12 0 112 70"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${p.c}"/><stop offset=".6" stop-color="${p.c}"/><stop offset="1" stop-color="${p.b}"/></linearGradient></defs><ellipse cx="42" cy="65" rx="36" ry="3.6" fill="#000" opacity=".2"/><circle cx="10" cy="47" r="5.8" fill="#fff"/><path class="leap" d="M26 47 Q10 53 -4 58" stroke="${p.d}" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M13 52 C7 38 18 21 37 21 C53 21 65 30 69 44 C71 53 62 59 50 59 L27 59 C20 59 15 57 13 52Z" fill="url(#${id})"/><g class="sit"><ellipse cx="31" cy="45" rx="15" ry="15" fill="${p.d}" opacity=".28"/><ellipse cx="31" cy="44" rx="12" ry="12.5" fill="${p.c}"/><path d="M14 61 Q28 55 44 58 Q47 62 42 63 L15 63Z" fill="${p.d}"/><path d="M57 50 L59 61" stroke="${p.c}" stroke-width="5" stroke-linecap="round"/><ellipse cx="60.5" cy="63" rx="4.5" ry="2" fill="${p.d}"/></g><g class="leap"><path d="M60 50 Q73 55 84 57" stroke="${p.c}" stroke-width="4.5" fill="none" stroke-linecap="round"/><ellipse cx="86" cy="57.5" rx="3.5" ry="2" fill="${p.d}"/><ellipse cx="-5" cy="58.5" rx="7" ry="2.6" fill="${p.d}"/></g><g class="ear"><ellipse cx="63" cy="13" rx="4.6" ry="15" fill="${p.d}" transform="rotate(-14 63 13)"/></g><g class="ear" style="animation-delay:-2.5s"><ellipse cx="68" cy="12" rx="4.8" ry="15.5" fill="${p.c}" transform="rotate(-24 68 12)"/><ellipse cx="68" cy="13" rx="2.2" ry="11" fill="${p.e}" transform="rotate(-24 68 13)"/></g><ellipse cx="74" cy="35" rx="12.5" ry="10.5" fill="${p.c}"/><ellipse cx="84" cy="39" rx="8" ry="6" fill="${p.b}"/><ellipse cx="90.5" cy="37" rx="2" ry="1.6" fill="#e58a98" class="nz"/><path d="M90 38.5 Q88 42 84 41.5" stroke="#6b5148" stroke-width=".9" fill="none" stroke-linecap="round"/><circle cx="77" cy="31.5" r="3.4" fill="${p.b}" opacity=".55"/><circle cx="77.5" cy="31.5" r="2.6" fill="#1a1210"/><circle cx="78.3" cy="30.6" r=".9" fill="#fff"/><path d="M88 40 L99 38 M88 41.5 L99 43.5" stroke="#fff" stroke-width=".5" opacity=".7"/></svg>`}
 /* lago: patos y mapaches */
 const LK=$('#lake');
 const DUCK='<svg viewBox="0 0 42 30"><path d="M5 17 L1 11 L9 15Z" fill="#ffd23f"/><ellipse cx="18" cy="20" rx="14" ry="8" fill="#ffd23f"/><ellipse cx="16" cy="20" rx="7" ry="4" fill="#f5b800"/><circle cx="30" cy="11" r="7" fill="#ffd23f"/><path d="M36 10 L41 12 L36 14Z" fill="#ff8a1f"/><circle cx="32" cy="9" r="1.3" fill="#222"/><path d="M2 26 Q10 24 18 26 T36 26" stroke="#fff" stroke-width="1.4" fill="none" opacity=".7"/></svg>';
 [[16,'26%',0,14],[21,'42%',-8,14],[13,'50%',-4,9]].forEach(([d,t,dl,w])=>{const e=mk('span',`--d:${d}s;--t:${t};animation-delay:${dl}s;width:${w}%`,LK);e.className='duck';e.innerHTML=DUCK});
-const COON='<svg viewBox="0 0 64 60"><g class="tl"><path d="M44 50 Q62 44 58 24" stroke="#8d8d96" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M44 50 Q62 44 58 24" stroke="#3b3b44" stroke-width="9.2" fill="none" stroke-dasharray="4 6"/></g><ellipse cx="28" cy="44" rx="15" ry="13" fill="#9a9aa3"/><ellipse cx="28" cy="47" rx="9" ry="8" fill="#dcdce1"/><circle cx="14" cy="11" r="5.5" fill="#8d8d96"/><circle cx="42" cy="11" r="5.5" fill="#8d8d96"/><circle cx="14" cy="11" r="2.5" fill="#3b3b44"/><circle cx="42" cy="11" r="2.5" fill="#3b3b44"/><ellipse cx="28" cy="23" rx="16" ry="13" fill="#a9a9b2"/><path d="M12 22 Q28 13 44 22 Q43 31 36 30 Q28 26 20 30 Q13 31 12 22Z" fill="#3b3b44"/><ellipse cx="28" cy="31" rx="7" ry="5" fill="#f1f1f4"/><circle cx="21" cy="23" r="2.6" fill="#fff"/><circle cx="35" cy="23" r="2.6" fill="#fff"/><circle cx="21.6" cy="23.2" r="1.3" fill="#111"/><circle cx="35.6" cy="23.2" r="1.3" fill="#111"/><ellipse cx="28" cy="29" rx="2.4" ry="1.8" fill="#111"/><ellipse cx="19" cy="56" rx="6" ry="2.8" fill="#3b3b44"/><ellipse cx="37" cy="56" rx="6" ry="2.8" fill="#3b3b44"/></svg>';
-['l','r'].forEach(s=>{const e=mk('div','',LK);e.className='coon '+s;e.innerHTML=COON});
+const BUNNY='<svg viewBox="0 0 64 60"><g class="tl"><circle cx="46" cy="49" r="6" fill="#fff"/></g><ellipse cx="28" cy="44" rx="16" ry="13" fill="#f4efe9"/><ellipse cx="37" cy="48" rx="9" ry="8" fill="#e9e2da"/><ellipse cx="20" cy="56" rx="6" ry="2.8" fill="#e9e2da"/><ellipse cx="36" cy="56" rx="6" ry="2.8" fill="#e9e2da"/><ellipse cx="21" cy="10" rx="4.5" ry="12" fill="#f7f3ee" transform="rotate(-8 21 10)"/><ellipse cx="21" cy="11" rx="2.2" ry="8" fill="#ffb7c5" transform="rotate(-8 21 11)"/><g class="tl"><ellipse cx="35" cy="10" rx="4.5" ry="12" fill="#f7f3ee" transform="rotate(8 35 10)"/><ellipse cx="35" cy="11" rx="2.2" ry="8" fill="#ffb7c5" transform="rotate(8 35 11)"/></g><ellipse cx="28" cy="27" rx="13" ry="11" fill="#f7f3ee"/><circle cx="22.5" cy="26" r="1.9" fill="#222"/><circle cx="33.5" cy="26" r="1.9" fill="#222"/><circle cx="23" cy="25.4" r=".6" fill="#fff"/><circle cx="34" cy="25.4" r=".6" fill="#fff"/><circle cx="19" cy="30" r="2.4" fill="#ffc9d4" opacity=".7"/><circle cx="37" cy="30" r="2.4" fill="#ffc9d4" opacity=".7"/><ellipse cx="28" cy="30" rx="1.9" ry="1.4" fill="#ff8fa3"/><path d="M28 31.4 Q26 34 24 32.6 M28 31.4 Q30 34 32 32.6" stroke="#b08a80" stroke-width=".8" fill="none" stroke-linecap="round"/><path d="M23 37 L28 39.5 L23 42Z M33 37 L28 39.5 L33 42Z" fill="#e8112d"/><circle cx="28" cy="39.5" r="1.8" fill="#c20e25"/></svg>';
+const COON_OLD='<svg viewBox="0 0 64 60"><g class="tl"><path d="M44 50 Q62 44 58 24" stroke="#8d8d96" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M44 50 Q62 44 58 24" stroke="#3b3b44" stroke-width="9.2" fill="none" stroke-dasharray="4 6"/></g><ellipse cx="28" cy="44" rx="15" ry="13" fill="#9a9aa3"/><ellipse cx="28" cy="47" rx="9" ry="8" fill="#dcdce1"/><circle cx="14" cy="11" r="5.5" fill="#8d8d96"/><circle cx="42" cy="11" r="5.5" fill="#8d8d96"/><circle cx="14" cy="11" r="2.5" fill="#3b3b44"/><circle cx="42" cy="11" r="2.5" fill="#3b3b44"/><ellipse cx="28" cy="23" rx="16" ry="13" fill="#a9a9b2"/><path d="M12 22 Q28 13 44 22 Q43 31 36 30 Q28 26 20 30 Q13 31 12 22Z" fill="#3b3b44"/><ellipse cx="28" cy="31" rx="7" ry="5" fill="#f1f1f4"/><circle cx="21" cy="23" r="2.6" fill="#fff"/><circle cx="35" cy="23" r="2.6" fill="#fff"/><circle cx="21.6" cy="23.2" r="1.3" fill="#111"/><circle cx="35.6" cy="23.2" r="1.3" fill="#111"/><ellipse cx="28" cy="29" rx="2.4" ry="1.8" fill="#111"/><ellipse cx="19" cy="56" rx="6" ry="2.8" fill="#3b3b44"/><ellipse cx="37" cy="56" rx="6" ry="2.8" fill="#3b3b44"/></svg>';
+['l','r'].forEach(s=>{const e=mk('div','',LK);e.className='coon '+s;e.style.setProperty('--ed',(-R(0,6)).toFixed(1)+'s');e.innerHTML=bunnySVG(s=='l'?PAL[3]:PAL[0])});
+const bw=Math.max(34,Math.min(58,innerWidth*.055));
+[].forEach(([b,d,dl,j])=>{const e=mk('div',`--b:${b}%;--d:${d}s;--j:${j}s;animation-delay:${dl}s;width:${(bw*(1-(b-26)/40)).toFixed(0)}px`,$('#scene'));e.className='hop';e.innerHTML='<div>'+BUNNY+'</div>'});
+
+/* conejos que saltan y descansan */
+const bw2=Math.max(46,Math.min(76,innerWidth*.06)), BN=[];
+[].forEach(([b,pi])=>{
+  const w=bw2*(1-(b-26)/40);
+  const e=mk('div',`bottom:${b}%;width:${w.toFixed(0)}px;--ed:${(-R(0,6)).toFixed(1)}s`,$('#scene'));
+  e.className='hop';e.innerHTML=bunnySVG(PAL[pi]);
+  BN.push({e,w,x:R(0,innerWidth-w),dir:Math.random()<.5?1:-1,st:0,t:R(.3,3),n:0,p:0,step:0});
+});
+function drawB(o,y,rot,sx,sy){o.e.style.transform=`translate(${o.x.toFixed(1)}px,${(-y).toFixed(1)}px) scale(${o.dir*sx},${sy}) rotate(${rot}deg)`}
+BN.forEach(o=>drawB(o,0,0,1,1));
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
+  let last=performance.now();
+  (function tick(now){
+    const dt=Math.min(.05,(now-last)/1000);last=now;
+    BN.forEach(o=>{
+      let y=0,rot=0,sx=1,sy=1;
+      if(o.st==0){
+        sy=1+.012*Math.sin(now/260);
+        o.t-=dt;
+        if(o.t<=0){
+          if(o.x<o.w*.3)o.dir=1;else if(o.x>innerWidth-o.w*1.3)o.dir=-1;else if(Math.random()<.3)o.dir*=-1;
+          o.st=1;o.p=0;o.n=1+Math.floor(R(0,4));o.step=o.w*R(.7,1.1);o.e.classList.add('air');
+        }
+      }else{
+        o.p+=dt/.5;
+        o.x+=o.dir*o.step*dt/.5;
+        if(o.x<-o.w*.2){o.x=-o.w*.2;o.dir=1}
+        if(o.x>innerWidth-o.w*.8){o.x=innerWidth-o.w*.8;o.dir=-1}
+        const p=Math.min(o.p,1);
+        y=Math.sin(Math.PI*p)*o.w*.28;rot=-14*(1-2*p);
+        if(p<.1||p>.9){sy=.93;sx=1.05}
+        if(o.p>=1){
+          o.n--;o.p=0;
+          if(o.n<=0){o.st=0;o.t=R(1.5,5.5);o.e.classList.remove('air')}
+        }
+      }
+      drawB(o,y,rot,sx,sy);
+    });
+    requestAnimationFrame(tick);
+  })(last);
+}
+
+/* conejos repartidos por toda la pradera (solo en zonas verdes, evitando el lago) */
+const RB=[],P2=Math.PI;
+function lakeBlock(x,y,w){
+  const W=innerWidth,H=innerHeight,lwp=Math.min(.58*W,560),lh=lwp*.325;
+  const cx=W/2,cy=H*.03+lh*.446,rx=lwp*.49*1.38+w*.4,ry=lh*.43*1.35+w*.12;
+  return ((x-cx)/rx)**2+((y-cy)/ry)**2<1;
+}
+function okB(x,y,w){const W=innerWidth,H=innerHeight;return x>w/2&&x<W-w/2&&y>H*.03&&y<H*.285&&!lakeBlock(x,y,w)}
+function placeB(o,jump,rot,sx,sy){
+  const pct=o.y/innerHeight*100, sc=Math.max(.7,Math.min(1.2,1.15-(pct-4)/60));
+  o.sc=sc;o.e.style.zIndex=105+Math.round(30-pct);
+  o.e.style.transform=`translate(${(o.x-o.bw/2).toFixed(1)}px,${(-(o.y+jump)).toFixed(1)}px) scale(${(o.dir*sx*sc).toFixed(3)},${(sy*sc).toFixed(3)}) rotate(${rot}deg)`;
+}
+function reloc(o){for(let k=0;k<60;k++){const x=R(.05,.95)*innerWidth,y=R(.04,.27)*innerHeight;if(okB(x,y,o.bw*(o.sc||1))){o.x=x;o.y=y;return}}}
+function pickHop(o){
+  const vw=o.bw*(o.sc||1);
+  for(let k=0;k<14;k++){
+    const a=o.hd+(k?R(-2.6,2.6):R(-.5,.5)), L=vw*R(.7,1.1);
+    const tx=o.x+Math.cos(a)*L, ty=o.y+Math.sin(a)*L*.45;
+    if(okB(tx,ty,vw)){o.hd=a;o.dir=Math.cos(a)>=0?1:-1;o.x0=o.x;o.y0=o.y;o.x1=tx;o.y1=ty;return true}
+  }
+  return false;
+}
+const NB=innerWidth<600?7:10, bwB=Math.max(50,Math.min(80,innerWidth*.062));
+for(let i=0;i<NB;i++){
+  const e=mk('div',`bottom:0;width:${bwB.toFixed(0)}px;--ed:${(-R(0,6)).toFixed(1)}s`,$('#scene'));
+  e.className='hop';e.innerHTML=bunnySVG(PAL[[2,1,0,3,2,0,1,3,2,0][i%10]]);
+  const o={e,bw:bwB,st:0,t:R(.2,3.5),n:0,p:0,hd:R(0,2*P2),dir:1,x:0,y:0};
+  for(let k=0;k<60;k++){const x=((i+R(.1,.9))/NB)*innerWidth,y=R(.04,.27)*innerHeight;if(okB(x,y,bwB)){o.x=x;o.y=y;break}}
+  o.dir=Math.cos(o.hd)>=0?1:-1;
+  RB.push(o);
+}
+RB.forEach(o=>placeB(o,0,0,1,1));
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
+  let last2=performance.now();
+  (function tk(now){
+    const dt=Math.min(.05,(now-last2)/1000);last2=now;
+    RB.forEach(o=>{
+      let jump=0,rot=0,sx=1,sy=1;
+      if(o.st==0&&!okB(o.x,o.y,o.bw*(o.sc||1)))reloc(o);
+      if(o.st==0){
+        sy=1+.012*Math.sin(now/260+o.bw);
+        o.t-=dt;
+        if(o.t<=0){
+          if(pickHop(o)){o.st=1;o.p=0;o.n=1+Math.floor(R(0,4));o.e.classList.add('air')}
+          else{o.t=.8;o.hd=R(0,2*P2)}
+        }
+      }else{
+        o.p+=dt/.5;
+        const p=Math.min(o.p,1);
+        o.x=o.x0+(o.x1-o.x0)*p;o.y=o.y0+(o.y1-o.y0)*p;
+        jump=Math.sin(P2*p)*o.bw*(o.sc||1)*.28;rot=-14*(1-2*p);
+        if(p<.1||p>.9){sy=.93;sx=1.05}
+        if(o.p>=1){
+          o.n--;o.p=0;
+          if(o.n>0&&!pickHop(o))o.n=0;
+          if(o.n<=0){o.st=0;o.t=R(1.5,5.5);o.e.classList.remove('air')}
+        }
+      }
+      placeB(o,jump,rot,sx,sy);
+    });
+    requestAnimationFrame(tk);
+  })(last2);
+}
 
 /* pétalos y luciérnagas */
 for(let i=0;i<26;i++)mk('b',`left:${R(0,100)}%;--s:${R(8,15)}px;--d:${R(9,18)}s;--x:${R(-120,120)}px;animation-delay:-${R(0,18)}s`,$('#petals'));
